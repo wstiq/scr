@@ -1,0 +1,38 @@
+version: '3.0'
+services:
+  mongodb:
+    image: mongo:3.6
+    container_name: mongo
+    environment:
+      - MONGO_DATA_DIR=/data/db
+      - MONGO_LOG_DIR=/dev/null
+    volumes:
+      - /tmp/data/scrumPokerDB:/data/db
+    ports:
+      - 27017:27017
+    command: mongod --smallfiles --logpath=/dev/null # --quiet
+
+  scrum-poker-api:
+    image: blacknebula/scrum-poker-api:2.0
+    container_name: scrum-poker-api
+    build:
+      context: .
+      dockerfile: Dockerfile-api
+    ports:
+      - 9001:8080
+    depends_on:
+      - mongodb
+
+  scrum-poker-front:
+    image: blacknebula/scrum-poker-front:2.0
+    container_name: scrum-poker-front
+    build:
+      context: .
+      dockerfile: Dockerfile-front
+    environment:
+      API_URL: localhost
+      API_PORT: 9001
+    ports:
+      - 9000:80
+    depends_on:
+      - scrum-poker-api

@@ -1,0 +1,69 @@
+<div class="ui text container" data-ng-controller="loginCtrl">
+    <div class="ui one column grid">
+        <div class="column">
+            <h2 class="ui teal image header">
+
+                <div class="content">
+                    Planning poker
+                </div>
+            </h2>
+
+            <form class="ui large form">
+                <div class="ui stacked segment">
+
+                    <div class="ui two column centered grid">
+                        <div class="column">
+                            <div class="ui center aligned basic segment">
+                                <!-- error message -->
+                                <ng-message data-message="{{message}}" data-visible="{{messageVisible}}"></ng-message>
+                                <!-- join session -->
+                                <div class="ui form">
+                                    <h4 class="ui dividing header">Join a session</h4>
+                                    <div class="field">
+                                        <div class="ui left icon input">
+                                            <i class="user icon"></i>
+                                            <input type="text" name="username" placeholder="username" autofocus
+                                                   data-ng-blur="connect()"
+                                                   data-ng-enter="connect()"
+                                                   data-ng-model="username">
+                                        </div>
+                                    </div>
+                                    <div class="field">
+                                        <div class="ui left icon input">
+                                            <i class="home icon"></i>
+                                            <input type="text" name="sessionId" placeholder="session"
+                                                   data-ng-blur="connect()"
+                                                   data-ng-enter="connect()"
+                                                   data-ng-model="sessionId">
+                                        </div>
+                                    </div>
+
+                                    <div class="ui big green labeled icon button" data-ng-click="connect()">
+                                        <i class="signup icon"></i>
+                                        Join session
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="ui vertical divider home">
+                            Or
+                        </div>
+
+                        <div class="column">
+                            <div class="ui center aligned basic segment">
+                                <!-- create session -->
+                                <h4 class="ui dividing header">Create session</h4>
+                                <div class="ui big green labeled icon basic button newSession" data-ng-click="newSession()">
+                                    <i class="wizard icon"></i>
+                                    New session
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </form>
+
+        </div>
+    </div>
+</div>

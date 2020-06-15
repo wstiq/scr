@@ -1,0 +1,330 @@
+<div class="ui secondary pointing menu" xmlns="http://www.w3.org/1999/html" xmlns="http://www.w3.org/1999/html">
+    <div class="left menu">
+        <div class="ui item">
+            <strong>{{sprintName}}</strong>
+        </div>
+    </div>
+    <div class="right menu">
+        <a class="ui item">
+            <span><strong>{{currentUser.username}}</strong> | </span>
+
+            <div ng-click="logout()">
+                Logout
+                <i class="icon sign out"></i>
+            </div>
+        </a>
+    </div>
+</div>
+
+<div class="ui segment">
+    <h2 class="ui header">
+        <a class="ui green ribbon label" ng-hide="currentStory.ended">Vote in progress</a>
+        <a class="ui red ribbon label" ng-show="currentStory.ended">Vote has ended</a>
+
+        <img src="/images/jira.png">
+
+        <div class="content" ng-show="stories.length > 0">
+            {{currentStory.storyName}}
+            <div class="sub header">Story # {{currentStory.order}}/{{stories.length}}</div>
+        </div>
+        <div>
+            <div class="ui toggle checkbox" ng-if="currentUser.admin">
+                <input type="checkbox" name="vote" ng-disabled="currentStory.ended" ng-model="currentStory.ended"
+                       ng-click="endVote()">
+                <label>End vote</label>
+            </div>
+
+        </div>
+    </h2>
+
+    <div class="ui grid">
+        <div class="ui ten wide column">
+            <!-- voting zone -->
+            <div class="ui horizontal divider">
+                Votes
+            </div>
+            <div class="ui five cards">
+                <div class="ui card"
+                     ng-class="getColor(user.vote)"
+                     ng-repeat="user in users">
+                    <!-- Dimmed card-->
+                    <div class="blurring dimmable image dimmed" ng-hide="user.hasVoted">
+                        <img src="/images/cardback.svg">
+                        <div class="ui inverted dimmer transition visible active">
+                            <div class="content">
+                                <div class="center">
+                                    <div class="ui disabled button">no card selected</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- hidden card selected-->
+                    <div class="image card-selected" ng-hide="currentStory.ended || !user.hasVoted">
+                        <img src="/images/cardback.svg">
+                    </div>
+                    <!-- visible card selected-->
+                    <div class="image" ng-show="currentStory.ended && user.hasVoted && theme != 'none'">
+                        <img ng-src="/images/{{theme}}/{{getCard(user.vote).index}}.{{extension}}"
+                             ng-if="theme != 'none'">
+                    </div>
+                    <div class="content">
+                        <i class="right floated remove icon link" ng-if="currentUser.admin"
+                           ng-hide="currentUser.username === user.username"
+                           ng-click="banUser(user)">
+                        </i>
+                        <div class="header capitalize center-text">
+                            <p class="text-overflow">{{user.username}}</p>
+
+                            <p ng-show="currentStory.ended && user.hasVoted">
+                                <span class="meta lowercase">{{toHumanReadableValue(getCard(user.vote))}}</span>
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- cards zone -->
+            <div class="ui horizontal divider">
+                Select a card
+            </div>
+
+            <!-- error message -->
+            <ng-message data-message="{{message}}" data-visible="{{messageVisible}}"></ng-message>
+
+            <!-- Cards -->
+            <div class="ui five link cards">
+                <div class="card {{card.color}} {{card.animate}}"
+                     ng-click="selectCard(card)"
+                     ng-repeat="card in cards">
+                    <div class="image" data-ng-show="theme != 'none'">
+                        <img ng-src="/images/{{theme}}/{{card.index}}.{{extension}}" ng-if="theme != 'none'">
+                    </div>
+                    <div class="content">
+                        <div class="ui inverted active dimmer" ng-show="card.selected && loading">
+                            <div class="ui loader"></div>
+                        </div>
+                        <div class="header capitalize center-text text-overflow clip"
+                             ng-hide="card.selected && loading">
+                            <span class="meta lowercase">{{toHumanReadableValue(card)}}</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+        <div class="ui six wide column">
+            <!-- results -->
+            <div class="ui mini statistics">
+                <div class="ui green statistic">
+                    <div class="label">
+                        <i class="archive icon"></i>
+                        Votes
+                    </div>
+                    <div class="text value">
+                        {{votes.length}}
+                    </div>
+                </div>
+
+                <div class="ui yellow statistic">
+                    <div class="label">
+                        Min
+                    </div>
+                    <div class="text value lowercase">
+                        {{min}}
+                    </div>
+                </div>
+
+                <div class="ui orange statistic">
+                    <div class="label">
+                        Max
+                    </div>
+                    <div class="text value lowercase">
+                        {{max}}
+                    </div>
+                </div>
+
+                <div class="ui blue statistic">
+                    <div class="label">
+                        Mean
+                    </div>
+                    <div class="text value lowercase">
+                        {{mean}}
+                    </div>
+                </div>
+
+            </div>
+            <div class="ui mini statistics">
+                <div ng-repeat="group in groups" class="ui blue statistic">
+                    <div class="label">
+                        {{group.value}}
+                    </div>
+                    <div class="text value lowercase">
+                        {{group.count}}
+                    </div>
+                </div>
+            </div>
+
+            <!-- info zone -->
+            <div class="ui top attached tabular menu">
+                <div class="item text-overflow" style="width: 25%" ng-class="{active: info.selected == 'stories'}"
+                     ng-click="info.selected = 'stories'">
+                    <i class="icon tasks"></i>
+                    Stories
+                </div>
+                <div class="item text-overflow" style="width: 25%" ng-class="{active: info.selected == 'users'}"
+                     ng-click="info.selected = 'users'">
+                    <i class="icon users"></i>
+                    Users
+                </div>
+                <div class="item text-overflow" style="width: 25%"
+                     ng-if="currentUser.admin"
+                     ng-class="{active: info.selected == 'settings'}"
+                     ng-click="info.selected = 'settings'">
+                    <i class="icon settings"></i>
+                    Settings
+                </div>
+                <div class="item text-overflow" style="width: 25%" ng-class="{active: info.selected == 'share'}"
+                     ng-click="info.selected = 'share'">
+                    <i class="icon share alternate"></i>
+                    Share
+                </div>
+            </div>
+            <!-- Stories -->
+            <div class="ui bottom attached tab segment" ng-class="{active: info.selected == 'stories'}">
+                <div class="ui grid">
+                    <div class="sixteen wide column" ng-if="currentUser.admin">
+                        <div class="ui move right reveal" ng-class="{active: showAddStory}">
+                            <div class="visible content">
+                                <!-- add button -->
+                                <div class="add-story-button">
+                                    <button class="ui circular icon button block" ng-click="addStory()">
+                                        <i class="add icon"></i>
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="hidden content">
+                                <div class="ui left icon input">
+                                    <input type="text" placeholder="Story name" class="add-story-input"
+                                           ng-enter="addStory()"
+                                           ng-model="newStory.storyName">
+                                    <i class="wizard icon"></i>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="sixteen wide column">
+                        <!-- hide ended stories -->
+                        <div class="pull-right hide-ended-stories">
+                            <div class="ui toggle checkbox">
+                                <input type="checkbox" name="showEndedStories" ng-model="showEndedStories">
+                                <label>Show ended stories</label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Stories table-->
+                <table class="ui selectable table">
+                    <thead>
+                    <tr>
+                        <th class="left aligned">Status</th>
+                        <th>#</th>
+                        <th>Name</th>
+                        <th class="right aligned" ng-if="currentUser.admin">Actions</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr ng-repeat="story in stories | storiesFilter:showEndedStories" ng-click="setCurrentStory(story)">
+                        <td class="left aligned">
+                            <button class="circular ui icon button">
+                                <i class="icon flag"
+                                   ng-class="{outline : story.storyId !== currentStory.storyId,
+                                   grey : story.storyId !== currentStory.storyId,
+                                   green : story.storyId == currentStory.storyId}">
+                                </i>
+                            </button>
+                        </td>
+                        <td>{{story.order}}</td>
+                        <td>{{story.storyName}}</td>
+                        <td class="right aligned">
+                            <div class="ui small basic icon buttons"
+                                 ng-if="currentUser.admin && story.storyId !== currentStory.storyId">
+                                <button class="ui button" ng-click="removeStory(story)"><i class="remove icon"></i>
+                                </button>
+                            </div>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+            <!-- users -->
+            <div class="ui bottom attached tab segment" ng-class="{active: info.selected == 'users'}">
+                <div class="ui list">
+                    <div class="item capitalize" ng-repeat="user in users">{{user.username}}</div>
+                </div>
+            </div>
+            <!-- settings -->
+            <div class="ui bottom attached tab segment"
+                 ng-if="currentUser.admin"
+                 ng-class="{active: info.selected == 'settings'}">
+                <div class="ui form">
+                    <!-- Change card themes-->
+                    <div class="grouped fields">
+                        <label>Change cards Theme</label>
+                        <div class="field">
+                            <div class="ui radio checkbox block">
+                                <input type="radio" ng-model="theme" ng-change="changeTheme(theme)" name="card-theme" value="none">
+                                <label>None</label>
+                            </div>
+                        </div>
+                        <div class="field">
+                            <div class="ui radio checkbox block">
+                                <input type="radio" ng-model="theme" ng-change="changeTheme(theme)" name="card-theme" value="star-wars">
+                                <label>Star wars</label>
+                            </div>
+                        </div>
+                        <div class="field">
+                            <div class="ui radio checkbox block">
+                                <input type="radio" ng-model="theme" ng-change="changeTheme(theme)" name="card-theme" value="super-heroes">
+                                <label>Super heroes</label>
+                            </div>
+                        </div>
+                        <div class="field">
+                            <div class="ui radio checkbox block">
+                                <input type="radio" ng-model="theme" ng-change="changeTheme(theme)" name="card-theme" value="redbooth">
+                                <label>Redbooth &copy;</label>
+                            </div>
+                        </div>
+                        <div class="field">
+                            <div class="ui radio checkbox block">
+                                <input type="radio" ng-model="theme" ng-change="changeTheme(theme)" name="card-theme" value="buildings">
+                                <label>Famous buildings</label>
+                            </div>
+                        </div>
+                        <div class="field">
+                            <div class="ui radio checkbox block">
+                                <input type="radio" ng-model="theme" ng-change="changeTheme(theme)" name="card-theme" value="colors">
+                                <label>Colors</label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- share -->
+            <div class="ui bottom attached tab segment" ng-class="{active: info.selected == 'share'}">
+
+                <!-- session copier -->
+                <div class="ui small action labeled input">
+                    <div class="ui label" style="padding-top:11px; width: 35%">
+                        Share session
+                    </div>
+                    <input id="sessionId" value="{{currentUser.sessionId}}" type="text" readonly style="width: 40%">
+                    <button data-clipboard-target="#sessionId" class="ui right icon button clipboard"
+                            style="width: 25%">
+                        <i class="copy icon"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

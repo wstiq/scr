@@ -1,0 +1,136 @@
+.pull-right {
+    float: right;
+}
+
+.pull-left {
+    float: left;
+}
+
+.center-vertically {
+    position: absolute;
+    top: 20%;
+}
+
+.center-page {
+    position: fixed !important;
+    top: 50%;
+    left: 50%;
+    /* bring your own prefixes */
+    transform: translate(-50%, -50%);
+}
+
+.center-img {
+    display: block;
+    margin: auto auto 20px;
+}
+
+.cool-font {
+    font-family: Andale Mono, monospace;
+    font-size: large;
+}
+
+.block {
+    margin: 2px !important;
+}
+
+.capitalize {
+    text-transform: capitalize;
+}
+
+.lowercase {
+    text-transform: lowercase !important;
+}
+
+.center-text {
+    text-align: center;
+}
+
+.main.container {
+    padding: 2em 6em 7em;
+}
+
+.move-up {
+    -webkit-transform-origin: 100% 50%;
+    -webkit-animation: up 200ms both ease-in;
+}
+
+.move-down {
+    -webkit-transform-origin: 100% 50%;
+    -webkit-animation: down 200ms both ease-in;
+}
+
+@-webkit-keyframes up {
+    0% {
+        -webkit-transform: translateY(0px);
+    }
+    100% {
+        -webkit-transform: translateY(-20px);
+    }
+}
+
+@-webkit-keyframes down {
+    0% {
+        -webkit-transform: translateY(-20px);
+    }
+    100% {
+        -webkit-transform: translateY(0px);
+    }
+}
+
+.add-story-button {
+    width: 135px;
+    background-color: white;
+    height: 40px;
+}
+
+.add-story-input {
+    width: 130px;
+    margin-top: 2px !important;
+}
+
+.hide-ended-stories {
+    padding-top: 10px;
+}
+
+.text-overflow {
+    width: 100%;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.clip {
+    text-overflow: clip !important;
+}
+
+.link {
+    cursor: pointer;
+}
+
+.card-selected {
+    background-color: white !important;
+}
+
+.ui.radio.checkbox {
+    margin-right: 5%;
+}
+
+.ui.header .ui.label {
+    margin-left: 0 !important;
+}
+
+.ui.ribbon.label:after {
+    border-right-color: inherit !important;
+}
+
+.ui.vertical.divider.home {
+    margin: 0 15px;
+}
+
+.newSession {
+    margin-top: 12% !important;
+}
+
+.block {
+    display: block !important;
+}

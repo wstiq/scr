@@ -1,0 +1,161 @@
+<div class="ui text container" ng-controller="dashboardCtrl">
+    <div class="ui one column grid">
+        <div class="column">
+            <h2 class="ui teal image header">
+
+                <div class="content">
+                    Planning poker Dashboard
+                </div>
+            </h2>
+
+            <form class="ui large form">
+                <div class="ui stacked segment">
+
+                    <div class="grouped fields">
+                        <label>Choose card set</label>
+
+                        <div class="field">
+                            <div class="ui radio checkbox block">
+                                <input type="radio" ng-model="cardSet" name="card-set" value="time">
+                                <label>Time ( 1h, 2h, 4h, 1d, 2d, 3d, 4d, 1w, ?, Pass, Break )</label>
+                            </div>
+                            <div class="ui radio checkbox block">
+                                <input type="radio" ng-model="cardSet" name="card-set" value="fibonacci">
+                                <label>Fibonacci ( 0, 1, 2, 3, 5, 8, 13, 21, 34, 55, 89, ?, Pass, Break)</label>
+                            </div>
+                            <div class="ui radio checkbox block">
+                                <input type="radio" ng-model="cardSet" name="card-set" value="modifiedFibonacci">
+                                <label>Modified Fibonacci ( 0, ½, 1, 2, 3, 5, 8, 13, 20, 40, 100, ?, Pass,Break)</label>
+                            </div>
+                            <div class="ui radio checkbox block">
+                                <input type="radio" ng-model="cardSet" name="card-set" value="vote">
+                                <label>Vote ( Yes, Hold, No)</label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="field">
+                        <label>Story name prefix</label>
+
+                        <div class="ui left icon input">
+                            <i class="tag icon"></i>
+                            <input type="text" name="storyNamePrefix" placeholder="task-" autofocus
+                                   ng-model="storyNamePrefix">
+                        </div>
+                    </div>
+
+                    <div class="grouped fields">
+                        <label>Choose cards Theme</label>
+
+                        <div class="field">
+                            <div class="ui radio checkbox block">
+                                <input type="radio" ng-model="cardTheme" name="card-theme" value="none">
+                                <label>None</label>
+                            </div>
+                            <div class="ui radio checkbox block">
+                                <input type="radio" ng-model="cardTheme" name="card-theme" value="star-wars">
+                                <label>Star wars</label>
+                            </div>
+                            <div class="ui radio checkbox block">
+                                <input type="radio" ng-model="cardTheme" name="card-theme" value="super-heroes">
+                                <label>Super heroes</label>
+                            </div>
+                            <div class="ui radio checkbox block">
+                                <input type="radio" ng-model="cardTheme" name="card-theme" value="redbooth">
+                                <label>Redbooth &copy;</label>
+                            </div>
+                            <div class="ui radio checkbox block">
+                                <input type="radio" ng-model="cardTheme" name="card-theme" value="buildings">
+                                <label>Famous buildings</label>
+                            </div>
+                            <div class="ui radio checkbox block">
+                                <input type="radio" ng-model="cardTheme" name="card-theme" value="colors">
+                                <label>Colors</label>
+                            </div>
+                        </div>
+
+                        <div class="field">
+                            <label>Enter stories</label>
+
+                            <textarea id="stories"
+                                      placeholder="Put each story on its own line, separated by Return/Enter"
+                                      rows="5" columns="100" maxlength="40000" ng-model="rowStories"></textarea>
+
+                            <div style="margin-top: 5px" class="ui teal submit button"
+                                 ng-click="convertToStories()">
+                                <i class="icon exchange"></i>
+                                convert to stories
+                            </div>
+                        </div>
+
+                        <div class="field" ng-hide="stories.length == 0">
+                            <label>Adjust stories</label>
+
+                            <div class="ui four column grid">
+                                <div class="row" ng-repeat="story in stories">
+                                    <div class="column">
+                                        {{story}}
+                                    </div>
+                                    <div class="column">
+                                        <button class="circular ui red icon button" ng-click="remove(story)">
+                                            <i class="remove icon"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="ui buttons">
+                            <div class="ui submit button" ng-click="cancel()">
+                                <i class="icon cancel"></i>
+                                cancel
+                            </div>
+                            <div class="or"></div>
+                            <div class="ui green submit button" ng-click="openModal()">
+                                <i class="icon play"></i>
+                                save & start
+                            </div>
+                        </div>
+
+                    </div>
+            </form>
+
+        </div>
+    </div>
+    <modal ng-model="show_modal">
+        <i class="close icon" ng-click="closeModal()"></i>
+
+        <div class="header">
+            New poker planning session
+        </div>
+        <div class="image content">
+            <div class="image">
+                <i class="wizard icon"></i>
+            </div>
+            <div class="description">
+                <p>Your username is need to start a new session</p>
+
+                <div class="field">
+                    <div class="ui left icon input">
+                        <i class="user icon"></i>
+                        <input type="text" name="user" placeholder="username" autofocus
+                               ng-enter="save(username)"
+                               ng-model="username">
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="actions">
+            <div class="two fluid ui inverted buttons">
+                <div class="ui red basic inverted button" ng-click="closeModal()">
+                    <i class="remove icon"></i>
+                    No
+                </div>
+                <div class="ui green basic inverted button" ng-click="save(username)">
+                    <i class="checkmark icon"></i>
+                    Yes
+                </div>
+            </div>
+        </div>
+    </modal>
+</div>
