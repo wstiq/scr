@@ -15,9 +15,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.Optional;
 
-/**
- * @author hazem
- */
+
 @Service
 public class AuthenticationService {
     private static final Logger LOGGER = LoggerFactory.getLogger(AuthenticationService.class);

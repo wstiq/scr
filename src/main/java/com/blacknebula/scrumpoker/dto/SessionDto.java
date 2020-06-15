@@ -5,9 +5,6 @@ import com.blacknebula.scrumpoker.entity.SessionEntity;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * @author hazem
- */
 public class SessionDto {
     private String sessionId;
     private String username;

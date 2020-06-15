@@ -3,9 +3,6 @@ package com.blacknebula.scrumpoker.dto;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 
-/**
- * @author hazem
- */
 public class VoteDto {
     private String voteId;
     private String storyId;

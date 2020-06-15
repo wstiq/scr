@@ -21,9 +21,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
-/**
- * @author hazem
- */
+
 @Service
 public class StoryService {
     private static final Logger LOGGER = LoggerFactory.getLogger(StoryService.class);

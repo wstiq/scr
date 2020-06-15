@@ -2,9 +2,6 @@ package com.blacknebula.scrumpoker.dto;
 
 import com.blacknebula.scrumpoker.entity.StoryEntity;
 
-/**
- * @author hazem
- */
 public class StoryDto {
     private String storyId;
     private String sessionId;

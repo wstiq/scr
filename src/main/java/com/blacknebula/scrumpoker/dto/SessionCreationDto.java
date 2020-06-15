@@ -7,9 +7,6 @@ import com.blacknebula.scrumpoker.enums.CardSetEnum;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * @author hazem
- */
 public class SessionCreationDto {
     private String sessionId;
     private String username;

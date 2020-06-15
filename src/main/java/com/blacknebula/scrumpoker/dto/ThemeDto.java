@@ -1,8 +1,5 @@
 package com.blacknebula.scrumpoker.dto;
 
-/**
- * @author hazem
- */
 public class ThemeDto {
     private String cardTheme;
 

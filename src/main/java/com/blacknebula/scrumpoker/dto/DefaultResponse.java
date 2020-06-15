@@ -2,9 +2,6 @@ package com.blacknebula.scrumpoker.dto;
 
 import com.blacknebula.scrumpoker.enums.ResponseStatus;
 
-/**
- * @author hazem
- */
 public class DefaultResponse {
 
     private final ResponseStatus status;

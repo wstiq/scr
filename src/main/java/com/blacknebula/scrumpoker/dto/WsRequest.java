@@ -2,9 +2,6 @@ package com.blacknebula.scrumpoker.dto;
 
 import com.blacknebula.scrumpoker.enums.WsTypes;
 
-/**
- * @author hazem
- */
 public class WsRequest {
     private WsTypes type;
     private Object data;

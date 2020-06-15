@@ -28,9 +28,7 @@ import java.util.List;
 import java.util.Random;
 import java.util.function.Consumer;
 
-/**
- * @author hazem
- */
+
 @Service
 public class SessionService {
 
